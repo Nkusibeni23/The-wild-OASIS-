@@ -1,27 +1,33 @@
 import styled from "styled-components";
+import GlobalStyles from "./styles/GlobalStyles";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
 
 const H1 = styled.h1`
   font-size: 30px;
   font-weight: 600;
   background-color: yellow;
 `;
-const Button = styled.button`
-  font-size: 1.4rem;
-  padding: 1.2rem 1.6rem;
-  font-weight: 500;
-  text-align: center;
-  color: var(--color-brand-600);
-  background-color: red;
-  border: 1px solid var(--color-brand-600);
-  border-radius: 1rem;
-  cursor: pointer;
+
+const StyledApp = styled.main`
+  padding: 0;
+  margin: 0;
+  background-color: beige;
+  padding: 20px;
 `;
 
 export default function App() {
   return (
-    <div>
-      <H1>Hello World</H1>
-      <Button>Button</Button>
-    </div>
+    <>
+      <GlobalStyles />
+      <StyledApp>
+        <H1>The Wild Oasis</H1>
+        <Button onClick={() => alert("check in")}>Check In</Button>
+        <Button onClick={() => alert("check out")}>Check Out</Button>
+
+        <Input type="number" placeholder="number of quests" />
+        <Input type="number" placeholder="number of guests" />
+      </StyledApp>
+    </>
   );
 }
