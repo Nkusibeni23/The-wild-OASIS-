@@ -22,7 +22,6 @@ const Container = styled.div`
   flex-direction: column;
   gap: 3.2rem;
 `;
-
 export default function AppLayout() {
   return (
     <StyledAppLayout>
