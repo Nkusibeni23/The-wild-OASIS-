@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import styled from "styled-components";
 
 import Input from "../../ui/Input";
@@ -5,10 +6,11 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
+import StyledFileInput from "../../ui/FileInput";
 
 const FormRow = styled.div`
   display: grid;
@@ -47,7 +49,8 @@ const Error = styled.span`
 `;
 
 function CreateCabinForm() {
-  const { register, handleSubmit, reset } = useForm();
+  const methods = useForm();
+  const { register, handleSubmit, reset } = methods;
   const queryClient = useQueryClient();
   const { mutate, isLoading: isCreating } = useMutation({
     mutationFn: createCabin,
@@ -57,17 +60,17 @@ function CreateCabinForm() {
       reset();
     },
     onError: (err) => {
-      console.error("Error creating cabin:", err);
       toast.error(err.message);
     },
   });
 
   function onSubmit(data) {
-    mutate(data);
+    mutate({ ...data, image: data.image[0] });
+    // mutate(data);
   }
 
   function onError(err) {
-    console.error(err);
+    // console.error(err);
   }
 
   return (
@@ -129,11 +132,19 @@ function CreateCabinForm() {
         />
       </FormRow>
 
-      <FormRow>
-        <Label htmlFor="image">Cabin photo</Label>
-        <FileInput id="image" accept="image/*" />
-      </FormRow>
-
+      <FormProvider {...methods}>
+        <Form onSubmit={handleSubmit(onSubmit, onError)}>
+          <FormRow>
+            <StyledFileInput
+              id="image"
+              accept="image/*"
+              {...register("image", {
+                required: "This Field is required",
+              })}
+            />
+          </FormRow>
+        </Form>
+      </FormProvider>
       <FormRow>
         {/* type is an HTML attribute! */}
         <Button variation="secondary" type="reset">
