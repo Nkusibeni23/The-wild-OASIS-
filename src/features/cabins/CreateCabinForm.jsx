@@ -65,11 +65,22 @@ function CreateCabinForm() {
   function onSubmit(data) {
     mutate(data);
   }
+
+  function onError(err) {
+    console.error(err);
+  }
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="names" {...register("names")} required />
+        <Input
+          type="text"
+          id="names"
+          {...register("names", {
+            required: "This Field is required",
+          })}
+        />
       </FormRow>
 
       <FormRow>
@@ -77,8 +88,9 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="maxCapacity"
-          {...register("maxCapacity")}
-          required
+          {...register("maxCapacity", {
+            required: "This Field is required",
+          })}
         />
       </FormRow>
 
@@ -87,8 +99,9 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="regularPrice"
-          {...register("regularPrice")}
-          required
+          {...register("regularPrice", {
+            required: "This Field is required",
+          })}
         />
       </FormRow>
 
@@ -98,8 +111,9 @@ function CreateCabinForm() {
           type="number"
           id="discount"
           defaultValue={0}
-          {...register("discount")}
-          required
+          {...register("discount", {
+            required: "This Field is required",
+          })}
         />
       </FormRow>
 
@@ -109,8 +123,9 @@ function CreateCabinForm() {
           type="number"
           id="description"
           defaultValue=""
-          {...register("description")}
-          required
+          {...register("description", {
+            required: "This Field is required",
+          })}
         />
       </FormRow>
 
